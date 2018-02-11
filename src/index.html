@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Cliente paises</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css" />
+  </head>
+  <body >
+    <div id="app"  class="container">
+       <div class="row">
+         <div class="col-md-4">
+            <h2>Paises</h2>
+            <hr>
+           <input type="text" id="nombrepais" v-model="nombrepais" /><input type="button" value="registrar" v-on:click="registrarPais()"/>
+           <hr>
+           <div class="list-group" v-for="pais in paises">
+             <a href="#" class="list-group-item" v-on:click="listarDepartamentos(pais)">{{pais.nombre}}</a>
+           </div>
+
+         </div>
+         <div class="col-md-4">
+                <h2>Departamentos</h2>
+                <hr>
+              <input type="text" id="nombredepartamento" v-model="nombredepartamento" /><input type="button" value="registrar" v-on:click="registrarDepartamento()"  :disabled="inHabilitarRegistroDepartamento" />
+              <hr>
+              <div id="departamentos" v-if="departamentos.length>0">
+               <div class="list-group" v-for="departamento in departamentos">
+                 <a href="#" class="list-group-item" v-on:click="listarCiudades(departamento)">{{departamento.nombre}}</a>
+               </div>
+             </div>
+         </div>
+         <div class="col-md-4">
+             <h2>Ciudades</h2>
+             <hr>
+           <input type="text" id="nombreciudad" v-model="nombreciudad" /><input type="button" value="registrar" v-on:click="registrarCiudad()" :disabled="inHabilitarRegistroCiudad"/>
+           <hr>
+           <div id="ciudades" v-if="ciudades.length>0">
+            <div class="list-group" v-for="ciudad in ciudades">
+              <a href="#" class="list-group-item">{{ciudad.nombre}}</a>
+            </div>
+          </div>
+         </div>
+       </div>
+
+    </div>
+
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script src="js/app.js"></script>
+
+</html>
