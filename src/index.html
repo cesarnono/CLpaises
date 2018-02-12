@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Cliente paises</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css" />
+    <style>
+    </style>
   </head>
   <body >
     <div id="app"  class="container">
@@ -14,19 +16,45 @@
            <input type="text" id="nombrepais" v-model="nombrepais" /><input type="button" value="registrar" v-on:click="registrarPais()"/>
            <hr>
            <div class="list-group" v-for="pais in paises">
-             <a href="#" class="list-group-item" v-on:click="listarDepartamentos(pais)">{{pais.nombre}}</a>
+             <div v-if="paisEditar && pais.id !== paisEditar.id" v-bind:class="{'list-group-item':true ,'clearfix':true, 'active' : (pais.id === paisseleccionado.id)}" v-on:click="listarDepartamentos(pais)">
+               {{pais.nombre}}
+               <span class="pull-right">
+               <button class="btn btn-xs btn-info" v-on:click="paisEditar = pais; nombrepais = pais.nombre">u</button>
+              <button class="btn btn-xs btn-info" v-on:click="eliminarPais(pais)">d</button>
+              </span>
+            </div>
+            <div v-else  v-bind:id="pais.id"  v-bind:class="{'list-group-item':true ,'clearfix':true, 'active' : (pais.id === paisseleccionado.id)}">
+              <input type="text"  v-model="nombrepais" />
+              <span class="pull-right">
+              <button class="btn btn-xs btn-info"  v-on:click="actualizarPais()">g</button>
+              <button class="btn btn-xs btn-info" v-on:click="paisEditar = {}; nombrepais =''">c</button>
+             </span>
            </div>
+         </div>
 
          </div>
          <div class="col-md-4">
-                <h2>Departamentos</h2>
-                <hr>
-              <input type="text" id="nombredepartamento" v-model="nombredepartamento" /><input type="button" value="registrar" v-on:click="registrarDepartamento()"  :disabled="inHabilitarRegistroDepartamento" />
-              <hr>
-              <div id="departamentos" v-if="departamentos.length>0">
+             <h2>Departamentos</h2>
+             <hr>
+             <input type="text" id="nombredepartamento" v-model="nombredepartamento" /><input type="button" value="registrar" v-on:click="registrarDepartamento()"  :disabled="inHabilitarRegistroDepartamento" />
+             <hr>
+            <div id="departamentos" v-if="departamentos.length>0">
                <div class="list-group" v-for="departamento in departamentos">
-                 <a href="#" class="list-group-item" v-on:click="listarCiudades(departamento)">{{departamento.nombre}}</a>
-               </div>
+                 <div v-if="departamentoEditar && departamento.id !== departamentoEditar.id" v-bind:class="{'list-group-item':true, 'active' : (departamento.id === departamentoseleccionado.id)}" v-on:click="listarCiudades(departamento)">
+                   {{departamento.nombre}}
+                   <span class="pull-right">
+                   <button class="btn btn-xs btn-info" v-on:click="departamentoEditar = departamento; nombredepartamento = departamento.nombre">u</button>
+                   <button class="btn btn-xs btn-info" v-on:click="eliminarDepartamento(departamento)">d</button>
+                   </span>
+                 </div>
+                   <div v-else  v-bind:class="{'list-group-item':true ,'clearfix':true, 'active' : (departamento.id === departamentoseleccionado.id)}">
+                   <input type="text"  v-model="nombredepartamento" />
+                   <span class="pull-right">
+                   <button class="btn btn-xs btn-info"  v-on:click="actualizarDepartamento()">g</button>
+                   <button class="btn btn-xs btn-info" v-on:click="departamentoEditar = {}; nombredepartamento =''">c</button>
+                  </span>
+                </div>
+              </div>
              </div>
          </div>
          <div class="col-md-4">
@@ -35,8 +63,21 @@
            <input type="text" id="nombreciudad" v-model="nombreciudad" /><input type="button" value="registrar" v-on:click="registrarCiudad()" :disabled="inHabilitarRegistroCiudad"/>
            <hr>
            <div id="ciudades" v-if="ciudades.length>0">
-            <div class="list-group" v-for="ciudad in ciudades">
-              <a href="#" class="list-group-item">{{ciudad.nombre}}</a>
+             <div class="list-group" v-for="ciudad in ciudades">
+               <div v-if="ciudadEditar && ciudad.id !== ciudadEditar.id" class="list-group-item">
+                 {{ciudad.nombre}}
+                 <span class="pull-right">
+                 <button class="btn btn-xs btn-info" v-on:click="ciudadEditar = ciudad; nombreciudad = ciudad.nombre">u</button>
+                 <button class="btn btn-xs btn-info" v-on:click="eliminarCiudad(ciudad)">d</button>
+               </span>
+               </div>
+               <div v-else class="list-group-item" >
+               <input type="text"  v-model="nombreciudad" />
+                 <span class="pull-right">
+                 <button class="btn btn-xs btn-info"  v-on:click="actualizarCiudad()">g</button>
+                 <button class="btn btn-xs btn-info" v-on:click="ciudadEditar = {}; nombreciudad =''">c</button>
+                 </span>
+               </div>
             </div>
           </div>
          </div>

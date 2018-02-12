@@ -13,7 +13,10 @@ var app = new Vue({
     departamentoseleccionado :{},
     inHabilitarRegistroDepartamento : true,
     inHabilitarRegistroCiudad : true,
-    ciudades:[]
+    ciudades:[],
+    paisEditar:{},
+    departamentoEditar:{},
+    ciudadEditar:{}
   },
    methods: {
      registrarPais:function(){
@@ -115,6 +118,136 @@ var app = new Vue({
     .always(function() {
       console.log("complete");
     });
+  },
+    actualizarPais : function(){
+      var self = app;
+      $.ajax({
+        url: 'http://localhost:8081/actualizarpais',
+        type: 'POST',
+        contentType: 'application/json',
+        data:JSON.stringify({"id": self.paisEditar.id, "nombre": self.nombrepais}),
+      })
+      .done(function() {
+        self.paisEditar = {};
+         self.nombrepais ="";
+         self.listarPaises();
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+    },
+
+    eliminarPais: function(pais){
+      var self = app;
+      if(confirm("Esta seguro que desea eliminar : "+pais.nombre)){
+        $.ajax({
+          url: 'http://localhost:8081/eliminarpais',
+          type: 'POST',
+          contentType: 'application/json',
+          data:JSON.stringify({"id": pais.id}),
+        })
+        .done(function() {
+           self.listarPaises();
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          console.log("complete");
+        });
+      }else{
+        return;
+      }
+
+    },
+
+    actualizarDepartamento: function(){
+      var self = app;
+      $.ajax({
+        url: 'http://localhost:8081/actualizardepartamento',
+        type: 'POST',
+        contentType: 'application/json',
+        data:JSON.stringify({"id": self.departamentoEditar.id, "nombre": self.nombredepartamento}),
+      })
+      .done(function() {
+        self.departamentoEditar = {};
+         self.nombredepartamento ="";
+         self.listarDepartamentos(self.paisseleccionado);
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+   },
+
+    eliminarDepartamento: function(departamento){
+      var self = app;
+      if(confirm("Esta seguro que desea eliminar : "+departamento.nombre)){
+        $.ajax({
+          url: 'http://localhost:8081/eliminardepartamento',
+          type: 'POST',
+          contentType: 'application/json',
+          data:JSON.stringify({"id": departamento.id}),
+        })
+        .done(function() {
+           self.listarDepartamentos(self.paisseleccionado);
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          console.log("complete");
+        });
+      }else{
+        return;
+      }
+    },
+    actualizarCiudad: function(){
+      var self = app;
+      $.ajax({
+        url: 'http://localhost:8081/actualizarciudad',
+        type: 'POST',
+        contentType: 'application/json',
+        data:JSON.stringify({"id": self.ciudadEditar.id, "nombre": self.nombreciudad}),
+      })
+      .done(function() {
+         self.ciudadEditar = {};
+         self.nombreciudad ="";
+         self.listarCiudades(self.departamentoseleccionado);
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
+   },
+
+   eliminarCiudad: function(ciudad){
+     var self = app;
+     if(confirm("Esta seguro que desea eliminar : "+ciudad.nombre)){
+       $.ajax({
+         url: 'http://localhost:8081/eliminarciudad',
+         type: 'POST',
+         contentType: 'application/json',
+         data:JSON.stringify({"id": ciudad.id}),
+       })
+       .done(function() {
+          self.listarCiudades(self.departamentoseleccionado);
+       })
+       .fail(function() {
+         console.log("error");
+       })
+       .always(function() {
+         console.log("complete");
+       });
+     }else{
+       return;
+     }
    }
-   }
-});
+}});
